@@ -1,0 +1,78 @@
+# =============================================================================
+# rl-policy-histopathology — configuration
+# =============================================================================
+# The only file you need to edit between environments.
+# Set dataset_path to wherever BreaKHis_v1 lives on your machine.
+#
+# External drive  (macOS):  /Volumes/MyDrive/KaggleData/BreaKHis_v1
+# External drive  (Linux):  /media/natalya/MyDrive/KaggleData/BreaKHis_v1
+# Google Colab:             /content/drive/MyDrive/KaggleData/BreaKHis_v1
+# Cloud GPU:                /home/user/data/BreaKHis_v1
+#
+# Expected structure under dataset_path:
+#   BreaKHis_v1/histology_slides/breast/
+#     benign/SOB/<subtype>/<patient>/<mag>X/*.png
+#     malignant/SOB/<subtype>/<patient>/<mag>X/*.png
+# =============================================================================
+
+data:
+  dataset_path: "/Volumes/MyDrive/KaggleData/BreaKHis_v1"
+  image_size: [224, 224]
+  test_split: 0.20
+  random_seed: 42
+
+# -----------------------------------------------------------------------------
+# Split protocol
+# patient_level: true  = correct (no patient in both train and test)
+#                false = image-level (ablation only — produces inflated metrics)
+# -----------------------------------------------------------------------------
+split:
+  patient_level: true
+  n_folds: 5
+
+# -----------------------------------------------------------------------------
+# Model — DenseNet201 only (see paper Section 3 for architecture justification)
+# -----------------------------------------------------------------------------
+model:
+  backbone: "DenseNet201"
+  pretrained: true
+  dropout_rate: 0.5
+  extra_conv_filters: 256
+  extra_conv_kernel: 3
+
+# -----------------------------------------------------------------------------
+# Training
+# -----------------------------------------------------------------------------
+training:
+  full_epochs: 50
+  batch_size: 32
+  learning_rate: 0.0001
+  early_stopping_patience: 10
+  lr_reduce_patience: 5
+  lr_reduce_factor: 0.5
+
+# -----------------------------------------------------------------------------
+# RL policy search
+# -----------------------------------------------------------------------------
+rl:
+  search_steps: 20
+  inner_epochs: 5
+  gamma: 0.9
+  alpha: 0.1
+  epsilon_start: 0.3
+  epsilon_end: 0.05
+  epsilon_decay: 0.92
+  auc_low_threshold: 0.95
+  auc_high_threshold: 0.98
+  # Reward variant for this run: "auc" | "accuracy" | "f1"
+  # Run once per variant to populate the reward-metric ablation table.
+  reward_metric: "auc"
+
+# -----------------------------------------------------------------------------
+# Outputs
+# -----------------------------------------------------------------------------
+evaluation:
+  results_dir: "results"
+  figures_dir: "results/figures"
+  reports_dir: "results/reports"
+  checkpoints_dir: "results/checkpoints"
