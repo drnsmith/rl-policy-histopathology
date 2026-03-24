@@ -257,3 +257,39 @@ def _assert_no_leakage(df_a: pd.DataFrame, df_b: pd.DataFrame, context: str):
             f"First 5: {sorted(overlap)[:5]}"
         )
     print(f"  ✓ No patient leakage detected in {context}")
+
+
+
+
+def load_official_folds(df, folds_csv_path, dataset_root):
+    import pandas as pd
+    folds_raw = pd.read_csv(folds_csv_path)
+
+    def _to_relative(full_path):
+        marker = 'BreaKHis_v1/histology_slides'
+        idx = full_path.find(marker)
+        return full_path[idx:] if idx >= 0 else full_path
+
+    df = df.copy()
+    df['_rel'] = df['path'].apply(_to_relative)
+    path_to_idx = dict(zip(df['_rel'], df.index))
+
+    result = []
+    for fold_num in sorted(folds_raw['fold'].unique()):
+        fold_data   = folds_raw[folds_raw['fold'] == fold_num]
+        train_files = set(fold_data[fold_data['grp'] == 'train']['filename'])
+        test_files  = set(fold_data[fold_data['grp'] == 'test']['filename'])
+        train_idx   = [path_to_idx[f] for f in train_files if f in path_to_idx]
+        test_idx    = [path_to_idx[f] for f in test_files  if f in path_to_idx]
+        fold_train  = df.iloc[train_idx].reset_index(drop=True)
+        fold_test   = df.iloc[test_idx].reset_index(drop=True)
+        n_tr = fold_train['patient_id'].nunique() if 'patient_id' in fold_train.columns else '?'
+        n_te = fold_test['patient_id'].nunique()  if 'patient_id' in fold_test.columns  else '?'
+        print(f"Fold {fold_num}: train={len(fold_train)} ({n_tr} patients)  test={len(fold_test)} ({n_te} patients)")
+        if 'patient_id' in fold_train.columns:
+            overlap = set(fold_train['patient_id']) & set(fold_test['patient_id'])
+            if overlap:
+                raise ValueError(f"Patient leakage in fold {fold_num}: {overlap}")
+            print(f"  checkmark No patient leakage")
+        result.append({'fold': fold_num, 'train_df': fold_train, 'test_df': fold_test})
+    return result
