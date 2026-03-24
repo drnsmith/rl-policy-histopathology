@@ -1,8 +1,6 @@
-# rl-policy-histopathology
+## **Adaptive augmentation policy search via reinforcement learning for breast cancer histopathology classification.**
 
-**Adaptive augmentation policy search via reinforcement learning for breast cancer histopathology classification.**
 
-*Natalya Smith — Independent Researcher, Auckland, New Zealand*
 
 ---
 
