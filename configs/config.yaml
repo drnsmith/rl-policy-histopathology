@@ -5,7 +5,7 @@
 # Set dataset_path to wherever BreaKHis_v1 lives on your machine.
 #
 # External drive  (macOS):  /Volumes/MyDrive/KaggleData/BreaKHis_v1
-# External drive  (Linux):  /media/..../MyDrive/KaggleData/BreaKHis_v1
+# External drive  (Linux):  /media/natalya/MyDrive/KaggleData/BreaKHis_v1
 # Google Colab:             /content/drive/MyDrive/KaggleData/BreaKHis_v1
 # Cloud GPU:                /home/user/data/BreaKHis_v1
 #
@@ -16,7 +16,7 @@
 # =============================================================================
 
 data:
-  dataset_path: "/Users/natashasmith/.cache/kagglehub/datasets/ambarish/breakhis/versions/4/BreaKHis_v1/BreaKHis_v1"
+  dataset_path: "/Users/natashasmith/.cache/kagglehub/datasets/ambarish/breakhis/versions/4/   BreaKHis_v1/BreaKHis_v1"
   folds_csv_path: "/Users/natashasmith/.cache/kagglehub/datasets/ambarish/breakhis/versions/4/Folds.csv"
   image_size: [224, 224]
   test_split: 0.20
