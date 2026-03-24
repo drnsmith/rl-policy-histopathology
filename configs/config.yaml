@@ -16,7 +16,7 @@
 # =============================================================================
 
 data:
-  dataset_path: "/Volumes/MyDrive/KaggleData/BreaKHis_v1"
+  dataset_path: "/Volumes/LaCie/KaggleData/BreaKHis_v1"
   image_size: [224, 224]
   test_split: 0.20
   random_seed: 42
