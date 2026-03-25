@@ -27,6 +27,7 @@ import tensorflow as tf
 # ── helpers ──────────────────────────────────────────────────────────────────
 
 def _rotate(image: tf.Tensor, max_deg: float = 20.0) -> tf.Tensor:
+    original_shape = image.shape
     angle = tf.random.uniform(
         (), -max_deg * math.pi / 180.0, max_deg * math.pi / 180.0
     )
@@ -35,7 +36,9 @@ def _rotate(image: tf.Tensor, max_deg: float = 20.0) -> tf.Tensor:
         return apply_affine_transform(
             img.numpy(), theta=float(ang.numpy()) * 180 / math.pi, fill_mode="nearest"
         ).astype("float32")
-    return tf.py_function(_apply, [image, angle], tf.float32)
+    result = tf.py_function(_apply, [image, angle], tf.float32)
+    result.set_shape(original_shape)
+    return result
 
 
 def _shift(image: tf.Tensor, frac: float = 0.10) -> tf.Tensor:
