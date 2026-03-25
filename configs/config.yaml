@@ -16,8 +16,7 @@
 # =============================================================================
 
 data:
-  dataset_path: "/Users/natashasmith/.cache/kagglehub/datasets/ambarish/breakhis/versions/4/   BreaKHis_v1/BreaKHis_v1"
-  folds_csv_path: "/Users/natashasmith/.cache/kagglehub/datasets/ambarish/breakhis/versions/4/Folds.csv"
+  dataset_path: "/Users/natashasmith/.cache/kagglehub/datasets/ambarish/breakhis/versions/4/BreaKHis_v1/BreaKHis_v1"
   image_size: [224, 224]
   test_split: 0.20
   random_seed: 42

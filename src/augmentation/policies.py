@@ -30,12 +30,12 @@ def _rotate(image: tf.Tensor, max_deg: float = 20.0) -> tf.Tensor:
     angle = tf.random.uniform(
         (), -max_deg * math.pi / 180.0, max_deg * math.pi / 180.0
     )
-    def _apply(img):
+    def _apply(img, ang):
         from tensorflow.keras.preprocessing.image import apply_affine_transform
         return apply_affine_transform(
-            img.numpy(), theta=float(angle) * 180 / math.pi, fill_mode="nearest"
+            img.numpy(), theta=float(ang.numpy()) * 180 / math.pi, fill_mode="nearest"
         ).astype("float32")
-    return tf.py_function(_apply, [image], tf.float32)
+    return tf.py_function(_apply, [image, angle], tf.float32)
 
 
 def _shift(image: tf.Tensor, frac: float = 0.10) -> tf.Tensor:
