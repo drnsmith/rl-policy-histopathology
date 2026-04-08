@@ -6,7 +6,7 @@
 
 ## What this is
 
-This repository implements the experiments for the paper:
+This repository implements the experiments for my paper:
 
 > *Adaptive Augmentation Policy Search via Reinforcement Learning for Robust Medical Image Classification* (preprint forthcoming)
 
